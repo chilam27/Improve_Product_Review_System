@@ -14,17 +14,19 @@ import re
 from nltk.tag import pos_tag
 from nltk.corpus import wordnet
 from nltk.stem.wordnet import WordNetLemmatizer
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
+from sklearn.feature_extraction.text import TfidfVectorizer
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 #Read in data
 df = pd.read_csv('review_scraped.csv')
 
+df.info()
 
-#Combine 'review_header' and 'review_body'
+#Combine and delete columns
 df['review_txt'] = df.review_header + ' ' + df.review_body
+
+df['verified_purchase'].value_counts()
+del df['verified_purchase'] # because all reviews we got are verified purchase so there is no point analyzing
 
 
 #Cleaning text/ text preprocessing and text normalization
@@ -56,7 +58,7 @@ def clean_text(text):
     
     text = decontraction(text) # replace contractions with their longer forms
         
-    text = re.sub(r'[-();:.,?!"|0-100]','', text) # remove punctuations
+    text = re.sub(r'[-();:.,?!"[0-9]+','', text) # remove punctuations and numbers
     
     text = word_tokenize(text) # tokenization
     
@@ -70,18 +72,40 @@ def clean_text(text):
     
     return text
     
-cleaned_text = df.review_txt.apply(lambda x: clean_text(x))
+
+cleaned_text = df.review_txt.apply(lambda x: " ".join(clean_text(x)))
 df['review_cleaned'] = cleaned_text
 
-
-#Split data to test and training set
-
-
-#Vectorization with n-gram
-ngram_cv = CountVectorizer(binary=True, ngram_range=(1, 3))
-ngram_cv.fit(df.review_cleaned)
+for i in range(len(df.review_cleaned)):
+    if len(df.review_cleaned[i]) == 0:
+        df.drop(index=i, inplace = True) # dropping 'review_cleaned' column with empty value
 
 
-#Feature engineering: sentiment analysis
+#Feature engineering: sentiment anaylsis usingVadar
+sentiment = SentimentIntensityAnalyzer()
 
-                           
+def sentiment_analysis(compound):
+    if compound >= 0.6:
+        return '5'
+    elif 0.6 > compound >= 0.2:
+        return '4'
+    elif 0.2 > compound >= -0.2:
+        return '3'
+    elif -0.2 > compound >= -0.4:
+        return '2'
+    elif -0.4 > compound >= -1:
+        return '1'
+    
+df['pedict_sentiment'] = df.review_cleaned.apply(lambda x: sentiment_analysis(sentiment.polarity_scores(x)['compound']))
+
+
+#Add length of character and word columns:
+df['character_len'] = df.review_cleaned.apply(lambda x: len(x))
+
+df['word_count'] = df.review_cleaned.apply(lambda x: len(x.split(' ')))
+
+
+#Vectorization with Term Frequency-Inverse Document Frequency model (TFIDF) vectorizer + ngrams: bi-gram and tri-gram
+ngram_cv = TfidfVectorizer(ngram_range=(2,2))
+X = ngram_cv.fit_transform(cleaned_text)
+df_x = pd.DataFrame(X.toarray(), columns=ngram_cv.get_feature_names())
