@@ -14,7 +14,6 @@ import re
 from nltk.tag import pos_tag
 from nltk.corpus import wordnet
 from nltk.stem.wordnet import WordNetLemmatizer
-from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 #Read in data
@@ -26,7 +25,15 @@ df.info()
 df['review_txt'] = df.review_header + ' ' + df.review_body
 
 df['verified_purchase'].value_counts()
+df['review_loc'].value_counts()
 del df['verified_purchase'] # because all reviews we got are verified purchase so there is no point analyzing
+del df['review_loc'] # because all reviews we got are from the United States so there is no point analyzing
+
+
+#Generalize 'date'
+df.review_date.value_counts()
+df.review_date = df.review_date.apply(lambda x: x.split(' ')[-1]) # group the month together to form quarter period of a year
+    
 
 
 #Cleaning text/ text preprocessing and text normalization
@@ -57,7 +64,7 @@ def clean_text(text):
     text = text.lower() # convert text to lowercase
     
     text = decontraction(text) # replace contractions with their longer forms
-        
+    
     text = re.sub(r'[-();:.,?!"[0-9]+','', text) # remove punctuations and numbers
     
     text = word_tokenize(text) # tokenization
@@ -71,14 +78,14 @@ def clean_text(text):
     text = [x for x in text if len(x) > 1] # only get word that has more than one character
     
     return text
-    
+
 
 cleaned_text = df.review_txt.apply(lambda x: " ".join(clean_text(x)))
 df['review_cleaned'] = cleaned_text
 
 for i in range(len(df.review_cleaned)):
     if len(df.review_cleaned[i]) == 0:
-        df.drop(index=i, inplace = True) # dropping 'review_cleaned' column with empty value
+        df.drop(index=i, inplace=True) # dropping 'review_cleaned' column with empty value
 
 
 #Feature engineering: sentiment anaylsis usingVadar
@@ -93,9 +100,9 @@ def sentiment_analysis(compound):
         return '3'
     elif -0.2 > compound >= -0.4:
         return '2'
-    elif -0.4 > compound >= -1:
+    else:
         return '1'
-    
+
 df['pedict_sentiment'] = df.review_cleaned.apply(lambda x: sentiment_analysis(sentiment.polarity_scores(x)['compound']))
 
 
@@ -105,7 +112,5 @@ df['character_len'] = df.review_cleaned.apply(lambda x: len(x))
 df['word_count'] = df.review_cleaned.apply(lambda x: len(x.split(' ')))
 
 
-#Vectorization with Term Frequency-Inverse Document Frequency model (TFIDF) vectorizer + ngrams: bi-gram and tri-gram
-ngram_cv = TfidfVectorizer(ngram_range=(2,2))
-X = ngram_cv.fit_transform(cleaned_text)
-df_x = pd.DataFrame(X.toarray(), columns=ngram_cv.get_feature_names())
+#Export to csv file
+df.to_csv('review_cleanned.csv', index=False)
