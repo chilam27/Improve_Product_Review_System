@@ -79,9 +79,7 @@ def clean_text(text):
     
     return text
 
-
-cleaned_text = df.review_txt.apply(lambda x: " ".join(clean_text(x)))
-df['review_cleaned'] = cleaned_text
+df['review_cleaned'] = df.review_txt.apply(lambda x: " ".join(clean_text(x)))
 
 for i in range(len(df.review_cleaned)):
     if len(df.review_cleaned[i]) == 0:

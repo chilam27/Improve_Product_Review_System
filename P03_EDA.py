@@ -12,6 +12,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from wordcloud import WordCloud
 from nltk import FreqDist
+import gensim
+from gensim import corpora
 
 
 #Read in data
@@ -52,37 +54,39 @@ plt.show()
 
 
 #Analyze rating by words frequency
-##Five stars reviews
-df_five = df[df.rating == 5]
-df_five.review_cleaned = df_five.review_cleaned.apply(lambda x: x.split(' '))
-five_star = df_five.review_cleaned.apply(pd.Series).stack()
-freq_dist_pos = FreqDist(five_rating)
-print(freq_dist_pos.most_common(20))
+def plot_word_freq(num):
+    df_test = df[df.rating == num]
+    df_test.review_cleaned_token = df_test.review_cleaned.apply(lambda x: x.split(' '))
+    star = df_test.review_cleaned_token.apply(pd.Series).stack()
+    freq_dist_pos = FreqDist(star)
 
-##Four stars reviews
-df_four = df[df.rating == 4]
-df_four.review_cleaned = df_four.review_cleaned.apply(lambda x: x.split(' '))
-four_star = df_four.review_cleaned.apply(pd.Series).stack()
-freq_dist_pos = FreqDist(four_star)
-print(freq_dist_pos.most_common(20))
+    plt.figure(figsize=(10, 6))
+    title = 'Figure n: top 20 word frequency for ' + str(num) + ' stars reviews'
+    freq_dist_pos.plot(20, cumulative=False, title=title)
 
-##Three stars reviews
-df_three = df[df.rating == 3]
-df_three.review_cleaned = df_three.review_cleaned.apply(lambda x: x.split(' '))
-three_star = df_three.review_cleaned.apply(pd.Series).stack()
-freq_dist_pos = FreqDist(three_star)
-print(freq_dist_pos.most_common(20))
+plot_word_freq(5) # five stars reviews
+plot_word_freq(4) # four stars reviews
+plot_word_freq(3) # three stars reviews
+plot_word_freq(2) # two stars reviews
+plot_word_freq(1) # one star reviews
 
-##Two stars reviews
-df_two = df[df.rating == 2]
-df_two.review_cleaned = df_two.review_cleaned.apply(lambda x: x.split(' '))
-two_star = df_two.review_cleaned.apply(pd.Series).stack()
-freq_dist_pos = FreqDist(two_star)
-print(freq_dist_pos.most_common(20))
 
-##One star reviews
-df_one = df[df.rating == 1]
-df_one.review_cleaned = df_one.review_cleaned.apply(lambda x: x.split(' '))
-one_star = df_one.review_cleaned.apply(pd.Series).stack()
-freq_dist_pos = FreqDist(one_star)
-print(freq_dist_pos.most_common(20))
+#Latent Dirichlet Allocation (LDA) topic modeling
+x = 1
+while x < 6:
+    df_test = df[df.rating == x]
+    df_test.review_cleaned_token = df_test.review_cleaned.apply(lambda x: x.split(' '))
+    star = df_test.review_cleaned_token.apply(pd.Series).stack()
+    
+    dictionary = corpora.Dictionary([star])
+
+    corpus = [dictionary.doc2bow(t) for t in [star]] # initialize a corpus
+    [i for i in corpus]
+
+    model = gensim.models.ldamodel.LdaModel(corpus=corpus, id2word=dictionary, num_topics=1, passes=50, random_state=1)
+    print(x, 'stars ********************')
+    print(model.print_topics(num_words=5))
+    print(df_test.review_cleaned.head())
+    print('\n')
+    
+    x += 1
