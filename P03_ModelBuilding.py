@@ -7,53 +7,86 @@ Created on Wed Jul  8 14:37:18 2020
 
 #Import modules
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report,confusion_matrix, accuracy_score, classification_report, roc_curve, roc_auc_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
+import matplotlib.pyplot as plt
+%matplotlib inline
 
 
 #Read in data
 df = pd.read_csv('review_cleanned.csv')
 
 
-#Vectorization with Term Frequency-Inverse Document Frequency model (TFIDF) vectorizer + ngrams: bi-gram and tri-gram
+#Vectorization
+##Term Frequency-Inverse Document Frequency model (TFIDF) vectorizer + ngrams: bi-gram
 ngram_cv = TfidfVectorizer(ngram_range=(2,2))
 X = ngram_cv.fit_transform(df.review_cleaned)
 df_x = pd.DataFrame(X.toarray(), columns=ngram_cv.get_feature_names())
 
 df = pd.concat([df, df_x], axis = 1)
 
+
 #Splitting test and train data set
 X = df.drop(['rating', 'customer_id', 'customer_name', 'review_header', 'review_body', 'review_txt', 'review_cleaned'], axis = 1)
 y = df.rating
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=1)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, stratify=df.rating, random_state=1)
 
-
+                
 #Classification model
 ##Logistic regression
-log_reg = LogisticRegression(solver='lbfgs', multi_class='multinomial', random_state=1).fit(X_train, y_train)
-print ("Accuracy: ", accuracy_score(y_train, log_reg.predict(X_train))) #0.5545
+for x in [0.01, 0.05, 0.25, 0.5, 1]:
+    log_reg = LogisticRegression(C=x, solver='lbfgs', multi_class='multinomial', random_state=1).fit(X_train, y_train)
+    print ("Logistics regression accuracy (tfidf) for ", x, ":", accuracy_score(y_train, log_reg.predict(X_train)))
+
+log_reg = LogisticRegression(C=0.5, solver='lbfgs', multi_class='multinomial', random_state=1).fit(X_train, y_train)
+print ("Logistics regression accuracy (tfidf) for ", x, ":", accuracy_score(y_train, log_reg.predict(X_train))) #0.5533
 
 #Naive Bayes
 naive_bayes = GaussianNB().fit(X_train, y_train)
-print ("Accuracy: ", accuracy_score(y_train, naive_bayes.predict(X_train))) #0.9472
+print ("Naive Bayes accuracy: ", accuracy_score(y_train, naive_bayes.predict(X_train))) #0.9452
 
 ##Random forest classifier
 randomfor_reg = RandomForestClassifier(n_estimators=1000, max_depth=10, random_state=0).fit(X_train, y_train)
-print ("Accuracy: ", accuracy_score(y_train, randomfor_reg.predict(X_train))) #0.5393
-
-##Support vector machines (SVMs)
-supportvector = svm.SVC(decision_function_shape="ovo").fit(X_train, y_train)
-print ("Accuracy: ", accuracy_score(y_train, supportvector.predict(X_train))) #0.5393
+print ("Random forest classifier accuracy: ", accuracy_score(y_train, randomfor_reg.predict(X_train))) #0.5368
 
 ##K-Nearest neighbor
 k_neighbor = KNeighborsClassifier(n_neighbors=15).fit(X_train, y_train)
-print ("Accuracy: ", accuracy_score(y_train, k_neighbor.predict(X_train))) #0.5798
+print ("K-Nearest neighbor accuracy: ", accuracy_score(y_train, k_neighbor.predict(X_train))) #0.5838
 
+##Support vector machines (SVMs)
+supportvector = svm.SVC(decision_function_shape="ovo").fit(X_train, y_train)
+print ("SVM accuracy: ", accuracy_score(y_train, supportvector.predict(X_train))) #0.5393
+
+#Predict Test set
+log_reg_test = log_reg.predict(X_test)
+naive_bayes_test = naive_bayes.predict(X_test)
+randomfor_reg_test = randomfor_reg.predict(X_test)
+k_neighbor_test = k_neighbor.predict(X_test)
+supportvector_test = supportvector.predict(X_test)
+
+print('Log regression: ', accuracy_score(y_test, log_reg_test)) #Best one
+print('Naive Bayes: ', accuracy_score(y_test, naive_bayes_test))
+print('Random forest regression: ', accuracy_score(y_test, randomfor_reg_test))
+print('K-nearest neighbor: ', accuracy_score(y_test, k_neighbor_test))
+print('Support vector machines: ', accuracy_score(y_test, supportvector_test))
+
+for x in range(100):
+    a = randomfor_reg.predict(np.array(list(X_test.iloc[x,:])).reshape(1,-1))[0]
+    b = y_test.tolist()
+    print(b[x], a)
 
 #Confusion matrix for evaluation metrics
+confusion_matrix(y_test, log_reg_test)
+
+print(classification_report(y_test,log_reg_test))
+
+#ROC curve
+
+

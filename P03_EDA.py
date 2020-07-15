@@ -18,6 +18,7 @@ from gensim import corpora
 
 #Read in data
 df = pd.read_csv('review_cleanned.csv')
+df.info()
 
 
 #Analyze 'rating'
