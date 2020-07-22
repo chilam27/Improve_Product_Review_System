@@ -24,15 +24,54 @@ Packages: BeautifulSoup, requests, nltk, re, matplotlib.pyplot, seaborn, WordClo
 
 ## Project Outline
 
+1. Data collection: I build a web scrapper through `BeautifulSoup` and scrape an amazon product's review. For this project, I choose a clothing item: **Dickies Men's Original 874 Work Pant**. The reason for my decision is I have more experience with the product and the quantity for the review is ideal.
 
+2. Text preprocessing: or data cleaning; I mostly cleanned the review texts to remove noise and make it easy for the machine to read in the data.
+
+3. Exploratory Data Analysis: I analyze the target variable ("rating") and examine its and other features' relationships. In this phase, I also perform Latent Dirichlet Allocation (LDA) topic modeling to search for topics of each rating cateogries.
+
+4. Model Building: I compare different classification algorithms (logistic regression, Naive Bayes, random forest classifier, k-nearest neighbor (KNN), and support vector machines (SVM)) and choose the one that produce the best result. The estimators I use for my multilabel classification algorithm is the accuracy classification score that computes subset accuracy.    
 
 ### [Data Collection](https://github.com/chilam27/Improved_Product_Review_System/blob/master/P03_DataCollection.py)
 
+_*Disclaimer: this data set is used for educational puspose._
+
+I create a web scrapper for the product reviews. My first intention was to scrape 8 different variables (see table below) plus the product's size and color. I want to see if it has any effect on determing the rating or not (such as whether such size or color has some defects). But I run into similar issue I have with my other web scrapper: that is I cannot make the function see null value as n/a and it will just skip over. So I decided to leave those two variables out of the data set. Although I want to scrape all 9,208 reviews it has, Amazon only allows to me to access to only 5,000 of the reviews. Hence, my data scrapped CSV consists of 8 variables and 5,000 records.
+
+Variables             |  Description
+:--------------------:|:---------------------------------------------------------------:
+customer_id           | the unique ID of each customer
+customer_name         | name of the customer
+rating                | customer's rating of the product (1-5)
+review_date           | review's posted date
+review_loc            | customer's location (I only take review from the United States)
+verified_purchase     | customer's product purchased verification
+review_head           | review's title
+review_body           | the main part of the review
 
 
 ### [Text Preprocessing](https://github.com/chilam27/Improved_Product_Review_System/blob/master/P03_TextPreprocessing.py)
 
+* Quick glance at the data set: according to figure 1, only one of our data is numerical ("rating") and the rest is categorical. Another important element is to determine whether there is any null value. Luckily for me, there is none.
 
+<p align="center">
+  <img width="600" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig1.png">
+</p>
+
+* I combine both the review's header and body together for easier analysis later on. And since both "verified_purchase" and "review_loc" only has one unique value for each variables, I remove them for the data set because it will not give us any information.
+
+* Generalize "review_date": In order to see relationship between "rating" and "review_date", I need to group the individual date together for a more compact and reasonable graphs later on. I want to group them by quater at first, but I find that I need to compact it even more so I end up doing it by years instead.
+
+* Then, I creat a function (_"clean_text"_) to perform text preprocessing to the review texts. I implement the following steps: convert text to lowercase, replace contractions with their longer forms, remove punctuations and numbers, tokenization (process of splitting strings into tokens), remove stop words, lemmatization(return a word to its common base root while takes into consideration the morphological analysis of the words), only get word that has more than one character. Since there will be some short reviews end up with empty value after the text is cleanned, I remove them from the data set.
+
+* I will do a bit of feature engineering and use VADER Sentiment (_SentimentIntensityAnalyzer_) as a sentiment analysis tool to analyze the emotion of the reivew text. This tool is very good at not only determine whether a string of text is postive or negative, it also give the string a sentiment intensity score. Since the score is ranged from [-1,1], I label the score as following:
+  - score >= 0.6: 5
+  - 0.6 > score >= 0.2: 4
+  - 0.2 > score >= -0.2: 3
+  - -0.2 > score >= -0.4: 2
+  - -1 >= score: 1
+
+* Lastly, I will add two more features by determining the string character's length and word count.
 
 ### [EDA](https://github.com/chilam27/Improved_Product_Review_System/blob/master/P03_EDA.py)
 
