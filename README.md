@@ -75,7 +75,29 @@ review_body           | the main part of the review
 
 ### [EDA](https://github.com/chilam27/Improved_Product_Review_System/blob/master/P03_EDA.py)
 
+* Univariate analysis on target variable ("rating"): I first look at the count of each rating to see if there is any inbalance. From the bar chart in figure 2, ratings from "1" - "4" is in a close range (from 400 - 750 counts range), but rating of "5" has over 2600 counts. Although it is quite substantial, in term of business wise, there are many more customer that are very satisfied with the product than those that are not. We can say that, overall, customers are happy with their purchase.
 
+<p align="center">
+  <img width="600" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig2.png">
+</p>
+
+* Multivariate analysis on target variable ("rating"): next I add time as another element to the analysis. I am wondering whether time has any effect on the customers' rating: maybe the product was bad and people gave negative feedback then the manufacturer improved it and people liked it more or vice versa? Based on the figure below, it turned out that the trend is quite the same. From 2013 to 2017, the rating count is ranked that "1" has the lowest count and the higher the rating the higher the count. It is not until 2028 to 2020 that the count for "1" increases in terms of count and proportion of the rating for the year and is ranked as the second highest count rank. We do not have enough information to conclude that, in gerneral, customers are not liking the product anymore. But these are very good data for manufactor to start taking into consideration.
+
+<p align="center">
+  <img width="900" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig3.png">
+</p>
+
+* Two more multivariate analysis that I perform is "rating" vs. "character_len" and "rating" vs. "word_count": 
+
+<p align="center">
+  <img width="800" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig4_5.png">
+</p>
+
+* After analyzing the variables, I want to have a closer look at the review text itself. I create a world count of all the review text for this product in figure 6.
+
+<p align="center">
+  <img width="800" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig6.png">
+</p>
 
 ### [Model Building](https://github.com/chilam27/Improved_Product_Review_System/blob/master/P03_ModelBuilding.py)
 
