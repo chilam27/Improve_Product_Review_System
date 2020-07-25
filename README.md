@@ -87,17 +87,44 @@ review_body           | the main part of the review
   <img width="900" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig3.png">
 </p>
 
-* Two more multivariate analysis that I perform is "rating" vs. "character_len" and "rating" vs. "word_count": 
+* Next on the list are "rating" vs. "character_len" and "rating" vs. "word_count": because both box plots have very similar trend so I will analyze them as one. My initial assumption was that there would be a semi-clear trend of the higher the rating, the less words or character length the review has. Although there would be outliers (say a customer really loves the product and ending up writing paragraphs about it), my assumption is based on the fact that customer is more likely to criticize more when they are dissatisifed with the purchase. Two graphs below prove my assumption, but the trend is not as clear as I imagine it would be: the "5" rating's count range and median is smaller than the others, but the differences are not too significant. Maybe the result would be better if I graph these varaibles before cleanning the review text.
 
 <p align="center">
   <img width="800" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig4_5.png">
 </p>
 
-* After analyzing the variables, I want to have a closer look at the review text itself. I create a world count of all the review text for this product in figure 6.
+* My last multivariate analysis is to see how accurate is the VADER Sentiment in column "predict_sentiment" by comparing its and the "rating" count. Based on the figure below, it does not predict as well as I would hope for. From "3" to "5" rating, the differences between the two counts are not as big of a gap. But it does pretty badly when trying to predict the sentiment of the "1" and "2" ratings. I can conclude that the VADER Sentiment might be over-rating the sentiment, so I need to expect seeing many reviews where they are rated negatively but the "predicted_sentiment" variable incorrectly states that it is positive.
 
 <p align="center">
-  <img width="800" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig6.png">
+  <img width="600" height="900" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig6.png">
 </p>
+
+* After analyzing the variables, I want to have a closer look at the cleanned review text itself. I create a word cloud of all the review text for this product in figure 6. This has a very good representation of what words are being repeated the most by having it in different font sizes (the bigger the fonts, the higher the counts). Just by looking at the picture itself, beside the obvious, here are some observation:
+  - I can see many text from "5" star ratings: "five star", "perfect", "buy", "great work", etc. 
+  - I can also get a sense of what most of the reviews are about: "size", "quality", "durable", "fit". 
+  - Negative review's texts are also present in the word cloud: "run small", "waist size", "tight", "return", etc.
+
+<p align="center">
+  <img width="800" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig7.png">
+</p>
+
+* Word cloud might be a great tool to have a general understanding of the text, but I can analyze it better if I look specifically at the word frequency of each ratings. Below are frequncey graphs of top 20 words from the five ratings. Here are some observations:
+  - Figure 7a-7c: I grouped these three graphs together because they have similar trend. Just by looking at the top 5 words with highest requency ("size", "pant", "small", "waist", "fit"), I can already see that customers are not satisfied with the product is not happy about sizing the most. It is not a suprised to see many people would return the product because the word "return" is also in the graph.
+  - Figure 7d: this is where we see the turning point the clearest: this graph has more positive words ranked top of the graph. Interestingly, the word "small" is still present in top 10.
+  - Figure 7e: this graph is filled completely with only neutral to positive words. But also interesting to note, although reviews do seem to complement the fitting of the product, but they seem to be more postive than previous ratings.
+  
+<img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8a.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8b.png">
+<img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8c.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8d.png">
+
+<p align="center">
+  <img width="400" height="375" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8e.png">
+</p>
+
+* For my final analysis, I implement Latent Dirichlet Allocation (LDA) topic modeling. Although this step may seems repetitive, because the outcome might just be similar to what I have analyzed, I want to see how accurate is this unsupervised learning approach in identifying topics that are being talked about in the reviews' text. It turns out that LDA topic modeling identifies the topics quite well.
+
+<img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9a.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9b.png">
+
+* This makes me wonder about the product sizing being polarized. Although different people have different shapes and sizes might be a good guess, but it does not align with the number of dissatisfied reviews. So, my assumption has to do with different sizes of the product might cause these criticisms: that is some product sizes might be scaled disproportionately.
 
 ### [Model Building](https://github.com/chilam27/Improved_Product_Review_System/blob/master/P03_ModelBuilding.py)
 
