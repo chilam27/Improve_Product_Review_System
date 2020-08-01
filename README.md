@@ -190,7 +190,7 @@ Out[10]: 0.9109109109109109
 
 ### Overall Model Performance
 
-
+The accuracy scores of the training data set from the five models above suprise me. Specifically, the three models that give the highest scores are: Logistic Regression (98.72%), Gaussian Naive Bayes Classifier (92.04%), and Support vector machines (91.09%). My initial thought was that these models is overfitted. I would not be concerned if the two most simple classifier (Logistic and Gaussian Naive Bayes) would be overfitted, but SVMs should not be.
 
 ## Conclusion
 
