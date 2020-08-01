@@ -128,7 +128,65 @@ review_body           | the main part of the review
 
 ### [Model Building](https://github.com/chilam27/Improved_Product_Review_System/blob/master/P03_ModelBuilding.py)
 
+* Perform vectorization on review texts: the process of converting words into numbers so that the machine can understand. For this project, I use Term Frequency-Inverse Document Frequency model (TFIDF) vectorizer + ngrams (bi-gram) technique. I have tried it with different ngrams (monogram, bi-gram, tri-gram) but it seems that bi-gram help to produce the best result.
 
+* After removing unnecessary columns ("customer_id", "customer_name", "review_header", "review_body", "review_txt", "review_cleaned", I split the data to training (80%) and testing (20%) sets in a stratify fashion: stratas are the different ratings. The reason for this there is a lot more "5" stars rating compares to others. By splitting it in stratify fashion, I can eliminate the bias of having an over-whelmed majority of that rating.
+
+* Because the data has many different ranges of value (such as character_len and those text vectorization columns), I rescale those values into a 0 to 1 range using the function `MinMaxScaler`. This helps the model produce a more accurate result.
+
+* The first model I apply for this data set is the _Logistic Regression_. Although the model is known more for its binary classification, not quite what I want to predict (which is 5 different ratings), I want to apply it in this project to see how it does compare to other more advance ones. By having the "multi_class" parameter as "multinomial"(which uses the cross-entropy loss), I can apply it for my multiclass case. I also test it with different "C" (inverse of regularization strength) of values 0.01, 0.05, 0.25, 0.5, 1 to see which one gives the highest accuracy. Though this is a more simple model compare to the rest, so I expected the accuracy will not be as high.
+
+```python
+for x in [0.01, 0.05, 0.25, 0.5, 1]:
+    log_reg = LogisticRegression(C=x, solver='lbfgs', multi_class='multinomial', random_state=1).fit(X_train, y_train)
+    print ("Logistics regression accuracy (tfidf) for ", x, ":", accuracy_score(y_train, log_reg.predict(X_train)))
+
+log_reg = LogisticRegression(C=1, solver='lbfgs', multi_class='multinomial', random_state=1).fit(X_train, y_train)
+print ("Logistics regression accuracy (tfidf) for C=1:", accuracy_score(y_train, log_reg.predict(X_train)))
+```
+```python
+Out[2]: 0.9872372372372372
+```
+
+* I apply the _Gaussian Naive Bayes Classifier_, a variant of Naive Bayes, for the next model comparison. Since this algorithm has a different approach in building up a simple model (by assuming data is described by a normal distribution), I am curious to see how this simple supervised learning algorithms perform compares to others.
+
+```python
+naive_bayes = GaussianNB().fit(X_train, y_train)
+print ("Naive Bayes accuracy: ", accuracy_score(y_train, naive_bayes.predict(X_train)))
+```
+```python
+Out[4]: 0.9204204204204204
+```
+
+* Another supervised learning algorithm is the _random forest classifier_. But unlike the two algorithms above, it uses decision trees combination and voting mechanism to perform its prediction. Because the _random forest classifier_ is not biased and more stable when get fed with new data (opposite from Logistics Regression), I want to test out this algorithm after being concerned the algorithms above are both overfitted by producing such high accuracy scores (above 90%).
+
+```python
+randomfor_reg = RandomForestClassifier(n_estimators=1000, max_depth=10, random_state=0).fit(X_train, y_train)
+print ("Random forest classifier accuracy: ", accuracy_score(y_train, randomfor_reg.predict(X_train)))
+```
+```python
+Out[6]: 0.5367867867867868
+```
+
+* An algorithm that uses a similarity measure of data points to perform classification is _K-Nearest Neighbors Classification_. This is a good algorithm to use if the data is not linearly separable.
+
+```python
+k_neighbor = KNeighborsClassifier(n_neighbors=15).fit(X_train, y_train)
+print ("K-Nearest neighbor accuracy: ", accuracy_score(y_train, k_neighbor.predict(X_train)))
+```
+```python
+Out[8]: 0.5535535535535535
+```
+
+* Last but not least, I use the _Support vector machines (SVMs)_ as the last model to perform classification and compare the result. Because SVMs have been reported to work better for text classification and very effective in high dimensional spaces, I expect this to return relatively higher accuracy compares to the rest.
+
+```python
+supportvector = svm.SVC(decision_function_shape="ovo", random_state=1).fit(X_train, y_train)
+print ("SVM accuracy: ", accuracy_score(y_train, supportvector.predict(X_train)))
+```
+```python
+Out[10]: 0.9109109109109109
+```
 
 ### Overall Model Performance
 
