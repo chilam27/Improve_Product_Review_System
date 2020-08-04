@@ -55,7 +55,7 @@ review_body           | the main part of the review
 * Quick glance at the data set: according to figure 1, only one of our data is numerical ("rating") and the rest is categorical. Another important element is to determine whether there is any null value. Luckily for me, there is none.
 
 <p align="center">
-  <img width="600" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig1.png">
+  <img width="500" height="300" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig1.png">
 </p>
 
 * I combine both the review's header and body together for easier analysis later on. And since both "verified_purchase" and "review_loc" only has one unique value for each variables, I remove them for the data set because it will not give us any information.
@@ -78,13 +78,13 @@ review_body           | the main part of the review
 * Univariate analysis on target variable ("rating"): I first look at the count of each rating to see if there is any inbalance. From the bar chart in figure 2, ratings from "1" - "4" is in a close range (from 400 - 750 counts range), but rating of "5" has over 2600 counts. Although it is quite substantial, in term of business wise, there are many more customer that are very satisfied with the product than those that are not. We can say that, overall, customers are happy with their purchase.
 
 <p align="center">
-  <img width="600" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig2.png">
+  <img width="500" height="300" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig2.png">
 </p>
 
 * Multivariate analysis on target variable ("rating"): next I add time as another element to the analysis. I am wondering whether time has any effect on the customers' rating: maybe the product was bad and people gave negative feedback then the manufacturer improved it and people liked it more or vice versa? Based on the figure below, it turned out that the trend is quite the same. From 2013 to 2017, the rating count is ranked that "1" has the lowest count and the higher the rating the higher the count. It is not until 2028 to 2020 that the count for "1" increases in terms of count and proportion of the rating for the year and is ranked as the second highest count rank. We do not have enough information to conclude that, in gerneral, customers are not liking the product anymore. But these are very good data for manufactor to start taking into consideration.
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig3.png">
+  <img width="900" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig3.png">
 </p>
 
 * Next on the list are "rating" vs. "character_len" and "rating" vs. "word_count": because both box plots have very similar trend so I will analyze them as one. My initial assumption was that there would be a semi-clear trend of the higher the rating, the less words or character length the review has. Although there would be outliers (say a customer really loves the product and ending up writing paragraphs about it), my assumption is based on the fact that customer is more likely to criticize more when they are dissatisifed with the purchase. Two graphs below prove my assumption, but the trend is not as clear as I imagine it would be: the "5" rating's count range and median is smaller than the others, but the differences are not too significant. Maybe the result would be better if I graph these varaibles before cleanning the review text.
@@ -96,7 +96,7 @@ review_body           | the main part of the review
 * My last multivariate analysis is to see how accurate is the VADER Sentiment in column "predict_sentiment" by comparing its and the "rating" count. Based on the figure below, it does not predict as well as I would hope for. From "3" to "5" rating, the differences between the two counts are not as big of a gap. But it does pretty badly when trying to predict the sentiment of the "1" and "2" ratings. I can conclude that the VADER Sentiment might be over-rating the sentiment, so I need to expect seeing many reviews where they are rated negatively but the "predicted_sentiment" variable incorrectly states that it is positive.
 
 <p align="center">
-  <img width="600" height="900" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig6.png">
+  <img width="500" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig6.png">
 </p>
 
 * After analyzing the variables, I want to have a closer look at the cleanned review text itself. I create a word cloud of all the review text for this product in figure 6. This has a very good representation of what words are being repeated the most by having it in different font sizes (the bigger the fonts, the higher the counts). Just by looking at the picture itself, beside the obvious, here are some observation:
@@ -105,7 +105,7 @@ review_body           | the main part of the review
   - Negative review's texts are also present in the word cloud: "run small", "waist size", "tight", "return", etc.
 
 <p align="center">
-  <img width="800" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig7.png">
+  <img width="900" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig7.png">
 </p>
 
 * Word cloud might be a great tool to have a general understanding of the text, but I can analyze it better if I look specifically at the word frequency of each ratings. Below are frequncey graphs of top 20 words from the five ratings. Here are some observations:
@@ -113,16 +113,16 @@ review_body           | the main part of the review
   - Figure 7d: this is where we see the turning point the clearest: this graph has more positive words ranked top of the graph. Interestingly, the word "small" is still present in top 10.
   - Figure 7e: this graph is filled completely with only neutral to positive words. But also interesting to note, although reviews do seem to complement the fitting of the product, but they seem to be more postive than previous ratings.
   
-<img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8a.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8b.png">
-<img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8c.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8d.png">
+<img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8a.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8b.png">
+<img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8c.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8d.png">
 
 <p align="center">
-  <img width="400" height="375" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8e.png">
+  <img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8e.png">
 </p>
 
 * For my final analysis, I implement Latent Dirichlet Allocation (LDA) topic modeling. Although this step may seems repetitive, because the outcome might just be similar to what I have analyzed, I want to see how accurate is this unsupervised learning approach in identifying topics that are being talked about in the reviews' text. It turns out that LDA topic modeling identifies the topics quite well.
 
-<img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9a.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9b.png">
+<img width="420" height="450" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9a.png"> <img width="420" height="450" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9b.png">
 
 * This makes me wonder about the product sizing being polarized. Although different people have different shapes and sizes might be a good guess, but it does not align with the number of dissatisfied reviews. So, my assumption has to do with different sizes of the product might cause these criticisms: that is some product sizes might be scaled disproportionately.
 
@@ -191,6 +191,28 @@ Out[10]: 0.9109109109109109
 ### Overall Model Performance
 
 The accuracy scores of the training data set from the five models above suprise me. Specifically, the three models that give the highest scores are: Logistic Regression (98.72%), Gaussian Naive Bayes Classifier (92.04%), and Support vector machines (91.09%). My initial thought was that these models is overfitted. I would not be concerned if the two most simple classifier (Logistic and Gaussian Naive Bayes) would be overfitted, but SVMs should not be.
+
+```python
+log_reg_test = log_reg.predict(X_test)
+naive_bayes_test = naive_bayes.predict(X_test)
+randomfor_reg_test = randomfor_reg.predict(X_test)
+k_neighbor_test = k_neighbor.predict(X_test)
+supportvector_test = supportvector.predict(X_test)
+
+print('Log regression: ', accuracy_score(y_test, log_reg_test))
+print('Naive Bayes: ', accuracy_score(y_test, naive_bayes_test))
+print('Random forest regression: ', accuracy_score(y_test, randomfor_reg_test))
+print('K-nearest neighbor: ', accuracy_score(y_test, k_neighbor_test))
+print('Support vector machines: ', accuracy_score(y_test, supportvector_test))
+```
+
+```
+Log regression:  0.6396396396396397
+Naive Bayes:  0.4244244244244244
+Random forest regression:  0.5375375375375375
+K-nearest neighbor:  0.5545545545545546
+Support vector machines:  0.6046046046046046
+```
 
 ## Conclusion
 
