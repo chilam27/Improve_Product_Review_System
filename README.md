@@ -113,8 +113,8 @@ review_body           | the main part of the review
   - Figure 7d: this is where we see the turning point the clearest: this graph has more positive words ranked top of the graph. Interestingly, the word "small" is still present in top 10.
   - Figure 7e: this graph is filled completely with only neutral to positive words. But also interesting to note, although reviews do seem to complement the fitting of the product, but they seem to be more postive than previous ratings.
   
-<img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8a.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8b.png">
-<img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8c.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8d.png">
+<img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8a.png"> <img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8b.png">
+<img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8c.png"> <img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8d.png">
 
 <p align="center">
   <img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8e.png">
