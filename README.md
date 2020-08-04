@@ -113,16 +113,16 @@ review_body           | the main part of the review
   - Figure 7d: this is where we see the turning point the clearest: this graph has more positive words ranked top of the graph. Interestingly, the word "small" is still present in top 10.
   - Figure 7e: this graph is filled completely with only neutral to positive words. But also interesting to note, although reviews do seem to complement the fitting of the product, but they seem to be more postive than previous ratings.
   
-<img width="390" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8a.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8b.png">
-<img width="390" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8c.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8d.png">
+<img width="395" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8a.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8b.png">
+<img width="395" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8c.png"> <img width="375" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8d.png">
 
 <p align="center">
-  <img width="390" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8e.png">
+  <img width="395" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8e.png">
 </p>
 
 * For my final analysis, I implement Latent Dirichlet Allocation (LDA) topic modeling. Although this step may seems repetitive, because the outcome might just be similar to what I have analyzed, I want to see how accurate is this unsupervised learning approach in identifying topics that are being talked about in the reviews' text. It turns out that LDA topic modeling identifies the topics quite well.
 
-<img width="390" height="450" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9a.png"> <img width="390" height="450" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9b.png">
+<img width="400" height="450" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9a.png"> <img width="400" height="450" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9b.png">
 
 * This makes me wonder about the product sizing being polarized. Although different people have different shapes and sizes might be a good guess, but it does not align with the number of dissatisfied reviews. So, my assumption has to do with different sizes of the product might cause these criticisms: that is some product sizes might be scaled disproportionately.
 
