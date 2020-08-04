@@ -120,11 +120,13 @@ review_body           | the main part of the review
   <img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8e.png">
 </p>
 
-* For my final analysis, I implement Latent Dirichlet Allocation (LDA) topic modeling. Although this step may seems repetitive, because the outcome might just be similar to what I have analyzed, I want to see how accurate is this unsupervised learning approach in identifying topics that are being talked about in the reviews' text. It turns out that LDA topic modeling identifies the topics quite well.
+* For my final analysis, I implement the Latent Dirichlet Allocation (LDA) topic modeling. Although this step may seem repetitive, because the outcome might just be similar to what I have analyzed, I want to see how accurate is this unsupervised learning approach in identifying topics that are being talked about in the reviews' text. It turns out that LDA topic modeling identifies the topics quite well. Below are the result and five examples from each rating:
+  - 1-3 stars reviews: consist of mostly "size", "pant", "small", "waist", and "fit" words. They indicate that the pants are too small around the waist for those unhappy customers.
+  - 4-5 stars reviews: consist of "pant", "size", "fit", "good", and "work". They indicate that the pant has a good fit. "work" here might also means that it is great for them to do their work in since this is a workwear type of pants.
 
-<img width="420" height="450" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9a.png"> <img width="420" height="450" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9b.png">
+<img width="415" height="450" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9a.png"> <img width="415" height="450" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig9b.png">
 
-* This makes me wonder about the product sizing being polarized. Although different people have different shapes and sizes might be a good guess, but it does not align with the number of dissatisfied reviews. So, my assumption has to do with different sizes of the product might cause these criticisms: that is some product sizes might be scaled disproportionately.
+This makes me wonder about the product sizing being polarized. Although different people have different shapes and sizes might be a good guess, but it does not align with the number of dissatisfied reviews. So, my assumption has to do with different sizes of the product might cause these criticisms: that is some product sizes might be scaled disproportionately.
 
 ### [Model Building](https://github.com/chilam27/Improved_Product_Review_System/blob/master/P03_ModelBuilding.py)
 
@@ -133,6 +135,10 @@ review_body           | the main part of the review
 * After removing unnecessary columns ("customer_id", "customer_name", "review_header", "review_body", "review_txt", "review_cleaned", I split the data to training (80%) and testing (20%) sets in a stratify fashion: stratas are the different ratings. The reason for this there is a lot more "5" stars rating compares to others. By splitting it in stratify fashion, I can eliminate the bias of having an over-whelmed majority of that rating.
 
 * Because the data has many different ranges of value (such as character_len and those text vectorization columns), I rescale those values into a 0 to 1 range using the function `MinMaxScaler`. This helps the model produce a more accurate result.
+
+<p align="center">
+  <img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig10.png">
+</p>
 
 * The first model I apply for this data set is the _Logistic Regression_. Although the model is known more for its binary classification, not quite what I want to predict (which is 5 different ratings), I want to apply it in this project to see how it does compare to other more advance ones. By having the "multi_class" parameter as "multinomial"(which uses the cross-entropy loss), I can apply it for my multiclass case. I also test it with different "C" (inverse of regularization strength) of values 0.01, 0.05, 0.25, 0.5, 1 to see which one gives the highest accuracy. Though this is a more simple model compare to the rest, so I expected the accuracy will not be as high.
 
@@ -190,7 +196,13 @@ Out[10]: 0.9109109109109109
 
 ### Overall Model Performance
 
-The accuracy scores of the training data set from the five models above suprise me. Specifically, the three models that give the highest scores are: Logistic Regression (98.72%), Gaussian Naive Bayes Classifier (92.04%), and Support vector machines (91.09%). My initial thought was that these models is overfitted. I would not be concerned if the two most simple classifier (Logistic and Gaussian Naive Bayes) would be overfitted, but SVMs should not be.
+The accuracy scores of the training data set from the five models above suprise me. Specifically, the three models that give the highest scores are: Logistic Regression (98.72%), Gaussian Naive Bayes Classifier (92.04%), and Support vector machines (91.09%). The two worst performing models are: random forest classifier (53.68%) and K-Nearest Neighbors Classification (55.35%). It is also interesting to note there are two clusters of accuracy scores produced by models above. 
+
+My initial thought was that the top performance models is overfitted. Although I did apply many crucial text pre-processing techniques, but any acuracy scores that is above 90% when dealing with real world data is a bit too high. I would not be concerned if the two most simple classifier (Logistic and Gaussian Naive Bayes) would be overfitted, but SVMs should not be. 
+
+Moving on to the cluster of lower score models. Although the scores are a lot lower than the other cluster (at least 36% score difference), not only they are above the 50% mark, these models do not have the overfitting problem (hence the reason I included them for this project).
+
+Next step is to implement these models to the test data set to see how well they can predict the ratings based on customers reviews:
 
 ```python
 log_reg_test = log_reg.predict(X_test)
@@ -214,6 +226,16 @@ K-nearest neighbor:  0.5545545545545546
 Support vector machines:  0.6046046046046046
 ```
 
+As expected, while there is not a major difference between test data accuracy scores and training data accuracy scores for the lower score models' cluster, the higher score models' cluster test data accuracy scores drop (might due to the model simplicity, Naive Bayes becomes the worst performing model). By being the best performing model in the train data, Log regression is also the best model in the test data with 63.96% accuracy score.
+
+<p align="center">
+  <img width="600" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig11.png">
+</p>
+
+<p align="center">
+  <img width="900" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig12.png">
+</p>
+
 ## Conclusion
 
 
@@ -235,6 +257,8 @@ Support vector machines:  0.6046046046046046
 [Loukas, S. (2020, June 14). ROC Curve Explained using a COVID-19 hypothetical example: Binary &amp; Multi-Class Classification...](https://towardsdatascience.com/roc-curve-explained-using-a-covid-19-hypothetical-example-binary-multi-class-classification-bab188ea869c)
 
 [N, L. (2019, June 19). Sentiment Analysis of IMDB Movie Reviews.](https://www.kaggle.com/lakshmi25npathi/sentiment-analysis-of-imdb-movie-reviews/notebook)
+
+[Narkhede, Sarang. (2018, May 9). Understanding Confusion Matrix.](https://towardsdatascience.com/understanding-confusion-matrix-a9ad42dcfd62)
 
 [Rai, A. (2019, January 23). Python: Sentiment Analysis using VADER.](https://www.geeksforgeeks.org/python-sentiment-analysis-using-vader/)
 
