@@ -192,6 +192,28 @@ Out[10]: 0.9109109109109109
 
 The accuracy scores of the training data set from the five models above suprise me. Specifically, the three models that give the highest scores are: Logistic Regression (98.72%), Gaussian Naive Bayes Classifier (92.04%), and Support vector machines (91.09%). My initial thought was that these models is overfitted. I would not be concerned if the two most simple classifier (Logistic and Gaussian Naive Bayes) would be overfitted, but SVMs should not be.
 
+```python
+log_reg_test = log_reg.predict(X_test)
+naive_bayes_test = naive_bayes.predict(X_test)
+randomfor_reg_test = randomfor_reg.predict(X_test)
+k_neighbor_test = k_neighbor.predict(X_test)
+supportvector_test = supportvector.predict(X_test)
+
+print('Log regression: ', accuracy_score(y_test, log_reg_test))
+print('Naive Bayes: ', accuracy_score(y_test, naive_bayes_test))
+print('Random forest regression: ', accuracy_score(y_test, randomfor_reg_test))
+print('K-nearest neighbor: ', accuracy_score(y_test, k_neighbor_test))
+print('Support vector machines: ', accuracy_score(y_test, supportvector_test))
+```
+
+```
+Log regression:  0.6396396396396397
+Naive Bayes:  0.4244244244244244
+Random forest regression:  0.5375375375375375
+K-nearest neighbor:  0.5545545545545546
+Support vector machines:  0.6046046046046046
+```
+
 ## Conclusion
 
 
