@@ -11,7 +11,7 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import classification_report,confusion_matrix, accuracy_score, classification_report, roc_curve, roc_auc_score
+from sklearn.metrics import classification_report,confusion_matrix, accuracy_score, classification_report, roc_curve, roc_auc_score, auc
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier
@@ -48,7 +48,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, strati
 norm = MinMaxScaler().fit(X_train)
 X_train = norm.transform(X_train)
 X_test = norm.transform(X_test)
-                
+
+
 #Classification model
 ##Logistic regression
 for x in [0.01, 0.05, 0.25, 0.5, 1]:
@@ -58,7 +59,7 @@ for x in [0.01, 0.05, 0.25, 0.5, 1]:
 log_reg = LogisticRegression(C=1, solver='lbfgs', multi_class='multinomial', random_state=1).fit(X_train, y_train)
 print ("Logistics regression accuracy (tfidf) for C=1:", accuracy_score(y_train, log_reg.predict(X_train))) #0.5533 #Normalized: 0.9872
 
-#Naive Bayes
+##Naive Bayes
 naive_bayes = GaussianNB().fit(X_train, y_train)
 print ("Naive Bayes accuracy: ", accuracy_score(y_train, naive_bayes.predict(X_train))) #0.9452 #Normalized: 0.9204
 
@@ -88,7 +89,7 @@ print('K-nearest neighbor: ', accuracy_score(y_test, k_neighbor_test))
 print('Support vector machines: ', accuracy_score(y_test, supportvector_test))
 
 for x in range(100):
-    a = randomfor_reg.predict(np.array(list(X_test.iloc[x,:])).reshape(1,-1))[0]
+    a = randomfor_reg.predict(np.array(list(X_test[x])).reshape(1,-1))[0]
     b = y_test.tolist()
     print(b[x], a)
 

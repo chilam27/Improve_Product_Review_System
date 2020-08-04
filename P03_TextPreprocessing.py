@@ -20,6 +20,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 df = pd.read_csv('review_scraped.csv')
 
 df.info()
+df.describe()
 
 #Combine and delete columns
 df['review_txt'] = df.review_header + ' ' + df.review_body
@@ -34,7 +35,6 @@ del df['review_loc'] # because all reviews we got are from the United States so 
 df.review_date.value_counts()
 df.review_date = df.review_date.apply(lambda x: x.split(' ')[-1]) # group the month together to form quarter period of a year
     
-
 
 #Cleaning text/ text preprocessing and text normalization
 def get_wordnet_pos(tag):
@@ -101,7 +101,7 @@ def sentiment_analysis(compound):
     else:
         return '1'
 
-df['pedict_sentiment'] = df.review_cleaned.apply(lambda x: sentiment_analysis(sentiment.polarity_scores(x)['compound']))
+df['predict_sentiment'] = df.review_cleaned.apply(lambda x: sentiment_analysis(sentiment.polarity_scores(x)['compound']))
 
 
 #Add length of character and word columns:

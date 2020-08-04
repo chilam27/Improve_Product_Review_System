@@ -1,4 +1,4 @@
-customer_id,customer_name,rating,review_date,review_header,review_body,review_txt,review_cleaned,pedict_sentiment,character_len,word_count
+customer_id,customer_name,rating,review_date,review_header,review_body,review_txt,review_cleaned,predict_sentiment,character_len,word_count
 R6AV90LELE05S,Barry Graham,2.0,2016,"
 Dickies standardize your production, please
 ","
