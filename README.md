@@ -196,9 +196,9 @@ Out[10]: 0.9109109109109109
 
 ### Overall Model Performance
 
-The accuracy scores of the training data set from the five models above suprise me. Specifically, the three models that give the highest scores are: Logistic Regression (98.72%), Gaussian Naive Bayes Classifier (92.04%), and Support vector machines (91.09%). The two worst performing models are: random forest classifier (53.68%) and K-Nearest Neighbors Classification (55.35%). It is also interesting to note there are two clusters of accuracy scores produced by models above. 
+The accuracy scores of the training data set from the five models above surprise me. Specifically, the three models that give the highest scores are Logistic Regression (98.72%), Gaussian Naive Bayes Classifier (92.04%), and Support vector machines (91.09%). The two worst performing models are random forest classifier (53.68%) and K-Nearest Neighbors Classification (55.35%). It is also interesting to note there are two clusters of accuracy scores produced by models above. 
 
-My initial thought was that the top performance models is overfitted. Although I did apply many crucial text pre-processing techniques, but any acuracy scores that is above 90% when dealing with real world data is a bit too high. I would not be concerned if the two most simple classifier (Logistic and Gaussian Naive Bayes) would be overfitted, but SVMs should not be. 
+My initial thought was that the top performance models are overfitted. Although I did apply many crucial text pre-processing techniques, any accuracy scores that are above 90% when dealing with real-world data is a bit too high. I would not be concerned if the two most simple classifiers (Logistic and Gaussian Naive Bayes) would be overfitted, but SVMs should not be. 
 
 Moving on to the cluster of lower score models. Although the scores are a lot lower than the other cluster (at least 36% score difference), not only they are above the 50% mark, these models do not have the overfitting problem (hence the reason I included them for this project).
 
@@ -226,11 +226,15 @@ K-nearest neighbor:  0.5545545545545546
 Support vector machines:  0.6046046046046046
 ```
 
-As expected, while there is not a major difference between test data accuracy scores and training data accuracy scores for the lower score models' cluster, the higher score models' cluster test data accuracy scores drop (might due to the model simplicity, Naive Bayes becomes the worst performing model). By being the best performing model in the train data, Log regression is also the best model in the test data with 63.96% accuracy score.
+As expected, while there is not a major difference between test data accuracy scores and training data accuracy scores for the lower score models' cluster, the higher score models' cluster test data accuracy scores drop (might due to the model simplicity, Naive Bayes becomes the worst performing model). By being the best performing model in the train data, Log regression is also the best model in the test data with a 63.96% accuracy score.
+
+In the figure below, I apply a confusion matrix to the multi-class classification model. Besides the chosen metric (accuracy score), there are three more to be considered: precision, recall, and f1-score. Precision answers the question: what is the proportion of all predicted positive being truly positive? Recall answers the question: what proportion of actual positives is correctly classified? In other words, precision emphasizes on the false positive and recall emphasize on the false negative. Because false positive or false negative outcome does not have much of a difference, let's look at the f1-score instead. F1-score is a good metric for my case because it is the balance between precision and recall. Figure 11 shows that the macro average of the f1-score is _0.41_ and the weighted average of the f1-score is _0.57_.
 
 <p align="center">
   <img width="600" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig11.png">
 </p>
+
+Lastly, I plot the area under the curve (AUC)- receiver operating characteristic (ROC) curve. This plot tells us, specifically, how well my model can distinguish the classes (ratings) by showing the trade-off of true positive rate and false positive rate for different threshold settings of the underlying model. Generally, if the curve is above the diagonal line (chance level) and the area is above 0.5, it can be considered a good ROC curve.
 
 <p align="center">
   <img width="900" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig12.png">
