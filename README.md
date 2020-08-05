@@ -1,6 +1,6 @@
 # Improving a Product Review System
 
-Improve the traditional product review system through sentimental analysis and Natural Language Processing (NLP). By taking only the customer review comment about the product and we can create a sentiment detection algorithm to rate the product. I will also include topic modeling in this project to detect the general topics of what the reviews are about.
+Improve the traditional product review system through text sentimental analysis and Natural Language Processing (NLP). By taking only the customer review comment about the product and we can create a sentiment detection algorithm to rate the product. I will also include topic modeling in this project to detect the general topics of what the reviews are about.
 
 ## Backgorund and Motivation
 
