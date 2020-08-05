@@ -247,7 +247,7 @@ I believe that with more data from other ratings (since "5" stars rating takes a
 If I was to continue this project, I would apply some front end works by productionize the model. I want to make it predicts the rating I want to give to a product based on the sentiment of my review text after I hit the submit (submit the review) button. After that, it will analyze all the reviews per rating and pick out the keywords of each rating. This helps the customer to see what are the most commonly discussed topic from each of the ratings. If I can apply this system to an online store, it will eliminate a step requires a customer to write a review and help them to get a quick glance at what others are saying about the product before buying. Hence better customer experience and interaction.
 
 <p align="center">
-  <img width="900" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig13.png">
+  <img width="800" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig13.png">
 </p>
 
 ## Author
