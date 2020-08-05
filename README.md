@@ -1,20 +1,18 @@
-# Improved Product Review System
+# Improving a Product Review System
 
-Improve the traditional product review system through sentimental analysis and Natural Language Processing (NLP). By taking only the customer review comment about the product and we can create a sentiment detection algorithm to automatically rated the product. I will also include topic modeling in this project to detect the generall topics of what the reviews are about. If the accuracy is acceptable, it will eliminate steps require customer to write a review and help them to get a quicker glance at what others are saying about the product before buying. 
+Improve the traditional product review system through sentimental analysis and Natural Language Processing (NLP). By taking only the customer review comment about the product and we can create a sentiment detection algorithm to rate the product. I will also include topic modeling in this project to detect the general topics of what the reviews are about.
 
 ## Backgorund and Motivation
 
-I has an idea for this project from the situation I had when doing thing that most college students do when they are bored: online shopping. I am a very frugal buyer myself. That is I spend a lot of time looking at product description and its reviews to make sure I will be happy with my purchases. Besides giant e-commerce companies (such as Amazon, Etsy, Ebay, etc.), not a lot of other online retailers have anything better than a basic star and comment review system for their products. That is why, in my belief, those top tier companies are having better customer interactions. Better customer interactions can lead to seller improve their products and buyers, like me, have more confidence in buyding the product.
+I have an idea for this project from the situation I had when doing the thing that most college students do when they are bored: online shopping. I am a very frugal buyer myself. I spend a lot of time looking at the product description and its reviews to make sure I will not regret my purchases. Besides giant e-commerce companies (such as Amazon, Etsy, eBay, etc.), not a lot of other online retailers have anything better than a basic star and comment review system for their products. That is why, in my belief, those top tier companies are having better customer interactions. Better customer interactions can lead to sellers to improve their products and buyers, like me, have more confidence in buying the product.
 
-Combine with a new principle I just learned that is called *Principle of Least Effort* (it was first articulated by the Italian philosopher Guillaume Ferrero) and the idea that businesses improve by reducing friction that is needed for customer to buy their product (I learned it from a book: Atomic Habits by James Clear). I want to build a review system that:
-  * Reduce the step of rating the product and have the machine to analyze the review comment and predict the rating instead.
-  * Gather all reviews, sort out and summarize to see what topics are being mentioned.
-  
-Since this project touch on many of the fields I am unfunfamiliar with, there are a couple of things that I wanted to learn out of this project that I hope will benefit my journey of becoming a better data scientist:
+Combine with a new principle I just learned that is called *Principle of Least Effort* (it was first articulated by the Italian philosopher Guillaume Ferrero) and the idea that businesses improve by reducing the friction that is needed for a customer to buy their product (I learned it from a book: Atomic Habits by James Clear). I want to build a review system that reduces one step needed in writing a review: rating the product. In order to build a system like so, I need to have the machine to analyze the review comment and build a model that can predict the rating.
+
+Since this project touch on many of the fields I am unfamiliar with, there are a couple of things that I wanted to learn out of this project that I hope will benefit my journey of becoming a better data scientist:
   1. Scrape raw reviews from Amazon.
   2. Learn about text and sentimental analysis.
   4. Understand how feature engineer can give me a better outcome.
-  3. Classification algorithms and the importance of feature scalling.
+  3. Classification algorithms and the importance of feature scaling.
 
 ## Prerequisites
 
@@ -26,17 +24,17 @@ Packages: BeautifulSoup, requests, nltk, re, matplotlib.pyplot, seaborn, WordClo
 
 1. Data collection: I build a web scrapper through `BeautifulSoup` and scrape an amazon product's review. For this project, I choose a clothing item: **Dickies Men's Original 874 Work Pant**. The reason for my decision is I have more experience with the product and the quantity for the review is ideal.
 
-2. Text preprocessing: or data cleaning; I mostly cleanned the review texts to remove noise and make it easy for the machine to read in the data.
+2. Text preprocessing: or data cleaning; I mostly cleaned the review texts to remove noise and make it easy for the machine to read in the data.
 
-3. Exploratory Data Analysis: I analyze the target variable ("rating") and examine its and other features' relationships. In this phase, I also perform Latent Dirichlet Allocation (LDA) topic modeling to search for topics of each rating cateogries.
+3. Exploratory Data Analysis: I analyze the target variable ("rating") and examine its and other features' relationships. In this phase, I also perform Latent Dirichlet Allocation (LDA) topic modeling to search for topics of each rating category.
 
-4. Model Building: I compare different classification algorithms (logistic regression, Naive Bayes, random forest classifier, k-nearest neighbor (KNN), and support vector machines (SVM)) and choose the one that produce the best result. The estimators I use for my multilabel classification algorithm is the accuracy classification score that computes subset accuracy.    
+4. Model Building: I compare different classification algorithms (logistic regression, Naive Bayes, random forest classifier, k-nearest neighbor (KNN), and support vector machines (SVM)) and choose the one that produces the best result. The estimators I use for my multilabel classification algorithm is the accuracy classification score that computes subset accuracy.
 
 ### [Data Collection](https://github.com/chilam27/Improved_Product_Review_System/blob/master/P03_DataCollection.py)
 
 _*Disclaimer: this data set is used for educational puspose._
 
-I create a web scrapper for the product reviews. My first intention was to scrape 8 different variables (see table below) plus the product's size and color. I want to see if it has any effect on determing the rating or not (such as whether such size or color has some defects). But I run into similar issue I have with my other web scrapper: that is I cannot make the function see null value as n/a and it will just skip over. So I decided to leave those two variables out of the data set. Although I want to scrape all 9,208 reviews it has, Amazon only allows to me to access to only 5,000 of the reviews. Hence, my data scrapped CSV consists of 8 variables and 5,000 records.
+I create a web scraper for the product reviews. My first intention was to scrape 8 different variables (see table below) plus the product's size and color. I want to see if it has any effect on determining the rating or not (such as whether such size or color has some defects). But I run into a similar issue I have with my other web scrapper: that is I cannot make the function see null value as n/a and it will just skip over. So I decided to leave those two variables out of the data set. Although I want to scrape all 9,208 reviews it has, Amazon only allows me to access only 5,000 of the reviews. Hence, my data scrapped CSV consists of 8 variables and 5,000 records.
 
 Variables             |  Description
 :--------------------:|:---------------------------------------------------------------:
@@ -52,19 +50,19 @@ review_body           | the main part of the review
 
 ### [Text Preprocessing](https://github.com/chilam27/Improved_Product_Review_System/blob/master/P03_TextPreprocessing.py)
 
-* Quick glance at the data set: according to figure 1, only one of our data is numerical ("rating") and the rest is categorical. Another important element is to determine whether there is any null value. Luckily for me, there is none.
+* By glancing at the data set: according to figure 1, only one of our data is numerical ("rating") and the rest is categorical. Another important element is to determine whether there is any null value. Luckily for me, there is none.
 
 <p align="center">
   <img width="500" height="300" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig1.png">
 </p>
 
-* I combine both the review's header and body together for easier analysis later on. And since both "verified_purchase" and "review_loc" only has one unique value for each variables, I remove them for the data set because it will not give us any information.
+* I combine both the review's header and body for easier analysis later on. And since both "verified_purchase" and "review_loc" only have one unique value for each variable, I remove them for the data set because it will not give us any information.
 
-* Generalize "review_date": In order to see relationship between "rating" and "review_date", I need to group the individual date together for a more compact and reasonable graphs later on. I want to group them by quater at first, but I find that I need to compact it even more so I end up doing it by years instead.
+* Generalize "review_date": To see the relationship between "rating" and "review_date", I need to group the individual date for a more compact and reasonable graph later on. I want to group them by quarter at first, but I find that I need to compact it even more so I end up doing it by years instead.
 
-* Then, I creat a function (_"clean_text"_) to perform text preprocessing to the review texts. I implement the following steps: convert text to lowercase, replace contractions with their longer forms, remove punctuations and numbers, tokenization (process of splitting strings into tokens), remove stop words, lemmatization(return a word to its common base root while takes into consideration the morphological analysis of the words), only get word that has more than one character. Since there will be some short reviews end up with empty value after the text is cleanned, I remove them from the data set.
+* Then, I create a function (_"clean_text"_) to perform text preprocessing to the review texts. I implement the following steps: convert text to lowercase, replace contractions with their longer forms, remove punctuations and numbers, tokenization (a process of splitting strings into tokens), remove stop words, lemmatization(return a word to its common base root while takes into consideration the morphological analysis of the words), only get word that has more than one character. Since there will be some short reviews that end up with empty value after the text is cleaned, I remove them from the data set.
 
-* I will do a bit of feature engineering and use VADER Sentiment (_SentimentIntensityAnalyzer_) as a sentiment analysis tool to analyze the emotion of the reivew text. This tool is very good at not only determine whether a string of text is postive or negative, it also give the string a sentiment intensity score. Since the score is ranged from [-1,1], I label the score as following:
+* I will do a bit of feature engineering and use VADER Sentiment (_SentimentIntensityAnalyzer_) as a sentiment analysis tool to analyze the emotion of the review text. This tool is very good at not only determine whether a string of text is positive or negative, but it also gives the string a sentiment intensity score. Since the score is ranged from [-1,1], I label the score as follows:
   - score >= 0.6: 5
   - 0.6 > score >= 0.2: 4
   - 0.2 > score >= -0.2: 3
@@ -75,19 +73,19 @@ review_body           | the main part of the review
 
 ### [EDA](https://github.com/chilam27/Improved_Product_Review_System/blob/master/P03_EDA.py)
 
-* Univariate analysis on target variable ("rating"): I first look at the count of each rating to see if there is any inbalance. From the bar chart in figure 2, ratings from "1" - "4" is in a close range (from 400 - 750 counts range), but rating of "5" has over 2600 counts. Although it is quite substantial, in term of business wise, there are many more customer that are very satisfied with the product than those that are not. We can say that, overall, customers are happy with their purchase.
+* Univariate analysis on target variable ("rating"): I first look at the count of each rating to see if there is an imbalance. From the bar chart in figure 2, ratings from "1" - "4" are in a close range (from 400 - 750 counts range), but the rating of "5" has over 2600 counts. Although it is quite substantial, in terms of business-wise, there are many more customers that are very satisfied with the product than those that are not. We can say that, overall, customers are happy with their purchase.
 
 <p align="center">
   <img width="500" height="300" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig2.png">
 </p>
 
-* Multivariate analysis on target variable ("rating"): next I add time as another element to the analysis. I am wondering whether time has any effect on the customers' rating: maybe the product was bad and people gave negative feedback then the manufacturer improved it and people liked it more or vice versa? Based on the figure below, it turned out that the trend is quite the same. From 2013 to 2017, the rating count is ranked that "1" has the lowest count and the higher the rating the higher the count. It is not until 2028 to 2020 that the count for "1" increases in terms of count and proportion of the rating for the year and is ranked as the second highest count rank. We do not have enough information to conclude that, in gerneral, customers are not liking the product anymore. But these are very good data for manufactor to start taking into consideration.
+* Multivariate analysis on target variable ("rating"): next I add time as another element to the analysis. I am wondering whether time has any effect on the customers' rating: maybe the product was bad and people gave negative feedback then the manufacturer improved it and people liked it more or vice versa? Based on the figure below, it turned out that the trend is quite the same. From 2013 to 2017, the rating count is ranked that "1" has the lowest count, and the higher the rating the higher the count. It is not until 2028 to 2020 that the count for "1" increases in terms of count and proportion of the rating for the year and is ranked as the second-highest count rank. We do not have enough information to conclude that, in general, customers are not liking the product anymore. But these are very good data for the manufacturer to start taking into consideration.
 
 <p align="center">
   <img width="900" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig3.png">
 </p>
 
-* Next on the list are "rating" vs. "character_len" and "rating" vs. "word_count": because both box plots have very similar trend so I will analyze them as one. My initial assumption was that there would be a semi-clear trend of the higher the rating, the less words or character length the review has. Although there would be outliers (say a customer really loves the product and ending up writing paragraphs about it), my assumption is based on the fact that customer is more likely to criticize more when they are dissatisifed with the purchase. Two graphs below prove my assumption, but the trend is not as clear as I imagine it would be: the "5" rating's count range and median is smaller than the others, but the differences are not too significant. Maybe the result would be better if I graph these varaibles before cleanning the review text.
+* Next on the list are "rating" vs. "character_len" and "rating" vs. "word_count": because both box plots have very similar trend so I will analyze them as one. My initial assumption was that there would be a semi-clear trend of the higher the rating, the fewer words or character length the review has. Although there would be outliers (say a customer loves the product and ending up writing paragraphs about it), my assumption is based on the fact that customer is more likely to criticize more when they are dissatisfied with the purchase. Two graphs below prove my assumption, but the trend is not as clear as I imagine it would be: the "5" rating's count range and the median is smaller than the others, but the differences are not too significant. Maybe the result would be better if I graph these variables before cleaning the review text.
 
 <p align="center">
   <img width="800" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig4_5.png">
@@ -99,7 +97,7 @@ review_body           | the main part of the review
   <img width="500" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig6.png">
 </p>
 
-* After analyzing the variables, I want to have a closer look at the cleanned review text itself. I create a word cloud of all the review text for this product in figure 6. This has a very good representation of what words are being repeated the most by having it in different font sizes (the bigger the fonts, the higher the counts). Just by looking at the picture itself, beside the obvious, here are some observation:
+* After analyzing the variables, I want to have a closer look at the cleaned review text itself. I create a word cloud of all the review text for this product in figure 6. This has a very good representation of what words are being repeated the most by having it in different font sizes (the bigger the fonts, the higher the counts). Just by looking at the picture itself, besides the obvious, here are some observation:
   - I can see many text from "5" star ratings: "five star", "perfect", "buy", "great work", etc. 
   - I can also get a sense of what most of the reviews are about: "size", "quality", "durable", "fit". 
   - Negative review's texts are also present in the word cloud: "run small", "waist size", "tight", "return", etc.
@@ -108,10 +106,10 @@ review_body           | the main part of the review
   <img width="900" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig7.png">
 </p>
 
-* Word cloud might be a great tool to have a general understanding of the text, but I can analyze it better if I look specifically at the word frequency of each ratings. Below are frequncey graphs of top 20 words from the five ratings. Here are some observations:
-  - Figure 7a-7c: I grouped these three graphs together because they have similar trend. Just by looking at the top 5 words with highest requency ("size", "pant", "small", "waist", "fit"), I can already see that customers are not satisfied with the product is not happy about sizing the most. It is not a suprised to see many people would return the product because the word "return" is also in the graph.
-  - Figure 7d: this is where we see the turning point the clearest: this graph has more positive words ranked top of the graph. Interestingly, the word "small" is still present in top 10.
-  - Figure 7e: this graph is filled completely with only neutral to positive words. But also interesting to note, although reviews do seem to complement the fitting of the product, but they seem to be more postive than previous ratings.
+* Word cloud might be a great tool to have a general understanding of the text, but I can analyze it better if I look specifically at the word frequency of each rating. Below are frequency graphs of the top 20 words from the five ratings. Here are some observations:
+  - Figure 7a-7c: I grouped these three graphs because they have a similar trend. Just by looking at the top 5 words with the highest frequency ("size", "pant", "small", "waist", "fit"), I can already see that customers are not satisfied with the product is not happy about sizing the most. It is not a surprise to see many people would return the product because the word "return" is also in the graph.
+  - Figure 7d: this is where we see the turning point the clearest: this graph has more positive words ranked top of the graph. Interestingly, the word "small" is still present in the top 10.
+  - Figure 7e: this graph is filled with only neutral to positive words. But also interesting to note, although reviews do seem to compliment the fitting of the product, they seem to be more positive than previous ratings.
   
 <img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8a.png"> <img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8b.png">
 <img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8c.png"> <img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig8d.png">
@@ -140,7 +138,7 @@ This makes me wonder about the product sizing being polarized. Although differen
   <img width="415" height="350" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig10.png">
 </p>
 
-* The first model I apply for this data set is the _Logistic Regression_. Although the model is known more for its binary classification, not quite what I want to predict (which is 5 different ratings), I want to apply it in this project to see how it does compare to other more advance ones. By having the "multi_class" parameter as "multinomial"(which uses the cross-entropy loss), I can apply it for my multiclass case. I also test it with different "C" (inverse of regularization strength) of values 0.01, 0.05, 0.25, 0.5, 1 to see which one gives the highest accuracy. Though this is a more simple model compare to the rest, so I expected the accuracy will not be as high.
+* The first model I apply for this data set is the _Logistic Regression_. Although the model is known more for its binary classification, not quite what I want to predict (which is 5 different ratings), I want to apply it in this project to see how it does compare to other more advanced ones. By having the "multi_class" parameter as "multinomial"(which uses the cross-entropy loss), I can apply it for my multiclass case. I also test it with different "C" (inverse of regularization strength) of values 0.01, 0.05, 0.25, 0.5, 1 to see which one gives the highest accuracy. Though this is a more simple model compare to the rest, so I expected the accuracy will not be as high.
 
 ```python
 for x in [0.01, 0.05, 0.25, 0.5, 1]:
@@ -242,7 +240,15 @@ Lastly, I plot the area under the curve (AUC)- receiver operating characteristic
 
 ## Conclusion
 
+Based on the accuracy score being almost 64%, it is safe to say that the Log regression model predicts the rating based on the customer's review quite accurately. Since I also consider other metrics, I do need to keep in mind that f1-scores are quite low (especially the macro average of the f1-score being below 0.5). Taking a look at the AUC-ROC curve, by having all AUC values above 0.75, it proves that this model can also distinguish the different ratings very well. In conclusion, I have reached my goal for this project by not only making the model works but also make it produce a great result.
 
+I believe that with more data from other ratings (since "5" stars rating takes a big proportion of the entire data set), the model's accuracy scores will be improved. Because I have a large enough sample size, I could have applied k-fold validation to eliminate the overfitting problem while predicting the train data set.
+
+If I was to continue this project, I would apply some front end works by productionize the model. I want to make it predicts the rating I want to give to a product based on the sentiment of my review text after I hit the submit (submit the review) button. After that, it will analyze all the reviews per rating and pick out the keywords of each rating. This helps the customer to see what are the most commonly discussed topic from each of the ratings. If I can apply this system to an online store, it will eliminate a step requires a customer to write a review and help them to get a quick glance at what others are saying about the product before buying. Hence better customer experience and interaction.
+
+<p align="center">
+  <img width="900" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig13.png">
+</p>
 
 ## Author
 
