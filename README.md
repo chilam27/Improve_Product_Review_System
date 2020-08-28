@@ -1,6 +1,20 @@
 # Improving a Product Review System
 
-Improve the traditional product review system through text sentimental analysis and Natural Language Processing (NLP). By taking only the customer review comment about the product and we can create a sentiment detection algorithm to rate the product. I will also include topic modeling in this project to detect the general topics of what the reviews are about.
+Improve the traditional product review system through text sentimental analysis and Natural Language Processing (NLP). By taking only the customer review comment about the product as input, I can create a sentiment detection algorithm to rate the product based on the comment. I will also include topic modeling in this project to detect the general topics of what the reviews are about.
+
+## Table of Contents
+
+* [Backgorund and Motivation](#backgorund-and-motivation)
+* [Prerequisites](#prerequisites)
+* [Project Outline](#project-outline)
+  * [Data Colleciton](#data-collection)
+  * [Text Preprocessing](#test-preprocessing)
+  * [Exploratory Data Analysis](#eda)
+  * [Model Building](#model-building)
+  * [Overall Model Performance](#overall-model-performance)
+* [Conclusion](#conclusion)
+* [Author](#author)
+* [Acknowledgments](#acknowledgments)
 
 ## Backgorund and Motivation
 
@@ -28,13 +42,13 @@ Packages: BeautifulSoup, requests, nltk, re, matplotlib.pyplot, seaborn, WordClo
 
 3. Exploratory Data Analysis: I analyze the target variable ("rating") and examine its and other features' relationships. In this phase, I also perform Latent Dirichlet Allocation (LDA) topic modeling to search for topics of each rating category.
 
-4. Model Building: I compare different classification algorithms (logistic regression, Naive Bayes, random forest classifier, k-nearest neighbor (KNN), and support vector machines (SVM)) and choose the one that produces the best result. The estimators I use for my multilabel classification algorithm is the accuracy classification score that computes subset accuracy.
+4. Model Building: I compare different classification algorithms (logistic regression, Naive Bayes, random forest classifier, k-nearest neighbor (KNN), and support vector machines (SVM)) and choose the one that produces the best result. The performance metric I use for my multilabel classification algorithm is the accuracy classification score that computes subset accuracy.
 
 ### [Data Collection](https://github.com/chilam27/Improved_Product_Review_System/blob/master/P03_DataCollection.py)
 
 _*Disclaimer: this data set is used for educational puspose._
 
-I create a web scraper for the product reviews. My first intention was to scrape 8 different variables (see table below) plus the product's size and color. I want to see if it has any effect on determining the rating or not (such as whether such size or color has some defects). But I run into a similar issue I have with my other web scrapper: that is I cannot make the function see null value as n/a and it will just skip over. So I decided to leave those two variables out of the data set. Although I want to scrape all 9,208 reviews it has, Amazon only allows me to access only 5,000 of the reviews. Hence, my data scrapped CSV consists of 8 variables and 5,000 records.
+I create a web scraper for product reviews. My first intention was to scrape 8 different variables (see table below) plus the product's size and color. I want to see if it has any effect on determining the rating or not (such as whether such size or color has some defects). But I run into a similar issue I have with my other web scrapper: that is I cannot make the function see null value as n/a and it will just skip over. So I decided to leave those two variables out of the data set. Although I want to scrape all 9,208 reviews it has, Amazon only allows me to access only 5,000 of the reviews. Hence, my data scrapped CSV consists of 8 variables and 5,000 records.
 
 Variables             |  Description
 :--------------------:|:---------------------------------------------------------------:
@@ -58,9 +72,9 @@ review_body           | the main part of the review
 
 * I combine both the review's header and body for easier analysis later on. And since both "verified_purchase" and "review_loc" only have one unique value for each variable, I remove them for the data set because it will not give us any information.
 
-* Generalize "review_date": To see the relationship between "rating" and "review_date", I need to group the individual date for a more compact and reasonable graph later on. I want to group them by quarter at first, but I find that I need to compact it even more so I end up doing it by years instead.
+* Generalize "review_date": To see the relationship between "rating" and "review_date", I need to group the individual date for a more compact and reasonable graph later on. I want to group them by quarters at first, but I find that I need to compact it even more so I end up doing it by years instead.
 
-* Then, I create a function (_"clean_text"_) to perform text preprocessing to the review texts. I implement the following steps: convert text to lowercase, replace contractions with their longer forms, remove punctuations and numbers, tokenization (a process of splitting strings into tokens), remove stop words, lemmatization(return a word to its common base root while takes into consideration the morphological analysis of the words), only get word that has more than one character. Since there will be some short reviews that end up with empty value after the text is cleaned, I remove them from the data set.
+* Then, I create a function ("clean_text") to perform text preprocessing to the review texts. I implement the following steps: convert text to lowercase, replace contractions with their longer forms, remove punctuations and numbers, tokenization (a process of splitting strings into tokens), remove stop words, lemmatization(return a word to its common base root while takes into consideration the morphological analysis of the words), only get word that has more than one character. Since there will be some short reviews that end up with empty value after the text is cleaned, I remove them from the data set.
 
 * I will do a bit of feature engineering and use VADER Sentiment (_SentimentIntensityAnalyzer_) as a sentiment analysis tool to analyze the emotion of the review text. This tool is very good at not only determine whether a string of text is positive or negative, but it also gives the string a sentiment intensity score. Since the score is ranged from [-1,1], I label the score as follows:
   - score >= 0.6: 5
@@ -194,7 +208,7 @@ Out[10]: 0.9109109109109109
 
 ### Overall Model Performance
 
-The accuracy scores of the training data set from the five models above surprise me. Specifically, the three models that give the highest scores are Logistic Regression (98.72%), Gaussian Naive Bayes Classifier (92.04%), and Support vector machines (91.09%). The two worst performing models are random forest classifier (53.68%) and K-Nearest Neighbors Classification (55.35%). It is also interesting to note there are two clusters of accuracy scores produced by models above. 
+The accuracy scores of the training data set from the five models above surprise me. Specifically, the three models that give the highest scores are Logistic Regression (98.72%), Gaussian Naive Bayes Classifier (92.04%), and Support vector machines (91.09%). The two worst-performing models are random forest classifier (53.68%) and K-Nearest Neighbors Classification (55.35%). It is also interesting to note there are two clusters of accuracy scores produced by models above. 
 
 My initial thought was that the top performance models are overfitted. Although I did apply many crucial text pre-processing techniques, any accuracy scores that are above 90% when dealing with real-world data is a bit too high. I would not be concerned if the two most simple classifiers (Logistic and Gaussian Naive Bayes) would be overfitted, but SVMs should not be. 
 
@@ -232,7 +246,7 @@ In the figure below, I apply a confusion matrix to the multi-class classificatio
   <img width="600" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig11.png">
 </p>
 
-Lastly, I plot the area under the curve (AUC)- receiver operating characteristic (ROC) curve. This plot tells us, specifically, how well my model can distinguish the classes (ratings) by showing the trade-off of true positive rate and false positive rate for different threshold settings of the underlying model. Generally, if the curve is above the diagonal line (chance level) and the area is above 0.5, it can be considered a good ROC curve.
+Lastly, I plot the area under the curve (AUC)- receiver operating characteristic (ROC) curve. This plot tells us, specifically, how well my model can distinguish the classes (ratings) by showing the trade-off of true positive rate and false-positive rate for different threshold settings of the underlying model. Generally, if the curve is above the diagonal line (chance level) and the area is above 0.5, it can be considered a good ROC curve.
 
 <p align="center">
   <img width="900" height="500" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig12.png">
@@ -244,7 +258,7 @@ Based on the accuracy score being almost 64%, it is safe to say that the Log reg
 
 I believe that with more data from other ratings (since "5" stars rating takes a big proportion of the entire data set), the model's accuracy scores will be improved. Because I have a large enough sample size, I could have applied k-fold validation to eliminate the overfitting problem while predicting the train data set.
 
-If I was to continue this project, I would apply some front end works by productionize the model. I want to make it predicts the rating I want to give to a product based on the sentiment of my review text after I hit the submit (submit the review) button. After that, it will analyze all the reviews per rating and pick out the keywords of each rating. This helps the customer to see what are the most commonly discussed topic from each of the ratings. If I can apply this system to an online store, it will eliminate a step requires a customer to write a review and help them to get a quick glance at what others are saying about the product before buying. Hence better customer experience and interaction.
+If I was to continue this project, I would apply some front end works by productionize the model. I want to make it predicts the rating I want to give to a product based on the sentiment of my review text after I hit the submit (submit the review) button. After that, it will analyze all the reviews per rating and pick out the keywords of each rating. This helps the customer to see what are the most commonly discussed topic from each of the ratings. If I can apply this system to an online store, it will eliminate a step that requires a customer to write a review and help them to get a glance at what others are saying about the product before buying. Hence better customer experience and interaction.
 
 <p align="center">
   <img width="800" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig13.png">
