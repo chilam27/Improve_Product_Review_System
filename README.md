@@ -8,7 +8,7 @@ Improve the traditional product review system through text sentimental analysis 
 * [Prerequisites](#prerequisites)
 * [Project Outline](#project-outline)
   * [Data Colleciton](#data-collection)
-  * [Text Preprocessing](#test-preprocessing)
+  * [Text Preprocessing](#text-preprocessing)
   * [Exploratory Data Analysis](#eda)
   * [Model Building](#model-building)
   * [Overall Model Performance](#overall-model-performance)
