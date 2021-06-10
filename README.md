@@ -264,7 +264,7 @@ If I was to continue this project, I would apply some front end works by product
   <img width="800" height="400" src="https://github.com/chilam27/Improved_Product_Review_System/blob/master/readme_image/fig13.png">
 </p>
 
-## **UPDATE**
+## **UPDATE!** (06/10/21)
 
 I had successfully deployed the machine learning model using Heroku and Streamlit! Check out this website for the application: [https://amazon-product-review-star.herokuapp.com/](https://amazon-product-review-star.herokuapp.com/). Also, you can check out the ["Improve_Review_System_Deploy"](https://github.com/chilam27/Improve_Review_Product_System_Deploy) for the code and data files.
 
